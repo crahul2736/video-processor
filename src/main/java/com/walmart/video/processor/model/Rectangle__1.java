@@ -12,10 +12,10 @@ import javax.annotation.Generated;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Rectangle__1 {
 
-    public long w;
-    public long x;
-    public long h;
-    public long y;
+    public int w;
+    public int x;
+    public int h;
+    public int y;
     private Map<String, java.lang.Object> additionalProperties = new HashMap<String, java.lang.Object>();
 
     public Map<String, java.lang.Object> getAdditionalProperties() {

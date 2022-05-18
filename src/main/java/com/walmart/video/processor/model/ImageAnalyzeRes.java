@@ -22,6 +22,8 @@ public class ImageAnalyzeRes {
     public ImageType imageType;
     public List<Tag> tags = null;
     private Map<String, java.lang.Object> additionalProperties = new HashMap<String, java.lang.Object>();
+    private String imgPath;
+    private String productName;
 
     public Map<String, java.lang.Object> getAdditionalProperties() {
         return this.additionalProperties;

@@ -1,26 +1,38 @@
 package com.walmart.video.processor;
 
 import com.walmart.video.processor.utils.DirUtil;
-import org.bytedeco.javacv.FFmpegFrameGrabber;
-import org.bytedeco.javacv.Frame;
-import org.bytedeco.javacv.Java2DFrameConverter;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
+        /*String imgPath = "src/main/resources/img/img-0.png";
+        String croppedImgPath = "src/main/resources/img/cropped/crp-img-01.png";
+
+        BufferedImage originalImg = ImageIO.read(
+                new File(imgPath));
+
+        BufferedImage SubImg
+                = originalImg.getSubimage(583, 790, 364, 214);
+        File outputfile
+                = new File(croppedImgPath);
+
+        // Writing image in new file created
+        ImageIO.write(SubImg, "png", outputfile);*/
+
+        List<Path> pathList = new ArrayList<>();
+
+        pathList = DirUtil.getFilePaths("src/main/resources/img/cropped/");
+
+        for (Path p : pathList) {
+            System.out.println("ho ho " + Arrays.asList(p.getFileName().toString().split("-")).get(0));
+//            Arrays.asList(p.getFileName().toString().split("-")).get(0);
+        }
+
      /*   FFmpegFrameGrabber g = new FFmpegFrameGrabber("src/main/resources/video/VID20220518121021.mp4");
 
         g.start();
@@ -35,7 +47,7 @@ public class Main {
         g.stop();*/
 //        DirUtil.clearDir("src/main/resources/img");
 
-        String directory = "src/main/resources/img";
+       /* String directory = "src/main/resources/img";
         List<Path> pathList = new ArrayList<>();
 
         try (Stream<Path> stream = Files.walk(Paths.get(directory))) {
@@ -44,6 +56,6 @@ public class Main {
                     .collect(Collectors.toList());
         }
 
-        pathList.forEach(System.out::println);
+        pathList.forEach(System.out::println);*/
     }
 }

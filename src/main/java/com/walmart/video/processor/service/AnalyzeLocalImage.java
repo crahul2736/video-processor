@@ -2,6 +2,8 @@ package com.walmart.video.processor.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.walmart.video.processor.model.ImageAnalyzeRes;
+import com.walmart.video.processor.model.Tag;
+import com.walmart.video.processor.utils.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -12,21 +14,38 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class AnalyzeLocalImage {
-    private static String subscriptionKey = "0a3bc19ae7de40dc8aa81aafd4b250ed";
-    private static String endpoint = "https://rc-image-processor.cognitiveservices.azure.com/";
-    private static final String uriBase = endpoint + "vision/v3.2/analyze";
-    private static String imgPath = "src/main/resources/IMG20220517202832.jpg";
 
+
+    @Value("${azure.subscription.Key}")
+    String subscriptionKey;
+
+    @Value("${azure.analyze.api.endpoint}")
+    String analyzeApiEndpoint;
+
+    /**
+     * Call Azure CV Analyze API to identify objects and metadata in image.
+     *
+     * @param imgPath
+     * @return
+     */
     public ImageAnalyzeRes analyzeImage(Path imgPath) {
+        final String uriBase = analyzeApiEndpoint + "vision/v3.2/analyze";
+        log.info("image path: {} {}", imgPath, imgPath.getFileName());
         CloseableHttpClient httpClient = HttpClientBuilder.create().build();
         String responseStr = "";
         ImageAnalyzeRes imageAnalyzeResObj = new ImageAnalyzeRes();
@@ -64,7 +83,16 @@ public class AnalyzeLocalImage {
                 responseStr = json.toString(2);
                 ObjectMapper om = new ObjectMapper();
                 imageAnalyzeResObj = om.readValue(responseStr, ImageAnalyzeRes.class);
+                imageAnalyzeResObj.setImgPath(imgPath.toString());
+                imageAnalyzeResObj.setProductName(Arrays.asList(imgPath.getFileName().toString().split("-")).get(0));
             }
+
+            // Validating and sorting tag based on inventory and confidence.
+            List<Tag> tagList = imageAnalyzeResObj.getTags().stream()
+                    .filter(x -> Constants.INVENTORY.contains(x.getName().toLowerCase(Locale.ROOT)))
+                    .collect(Collectors.toList());
+            tagList.sort(Comparator.comparing(a -> a.getConfidence()));
+            imageAnalyzeResObj.setTags(tagList);
         } catch (Exception e) {
             // Display error message.
             log.error(e.getMessage());
