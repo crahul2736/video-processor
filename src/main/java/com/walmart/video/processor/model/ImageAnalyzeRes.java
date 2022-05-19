@@ -24,6 +24,7 @@ public class ImageAnalyzeRes {
     private Map<String, java.lang.Object> additionalProperties = new HashMap<String, java.lang.Object>();
     private String imgPath;
     private String productName;
+    private String imgUrl;
 
     public Map<String, java.lang.Object> getAdditionalProperties() {
         return this.additionalProperties;

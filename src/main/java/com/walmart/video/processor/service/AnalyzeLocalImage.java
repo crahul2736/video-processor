@@ -14,9 +14,13 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,6 +40,8 @@ public class AnalyzeLocalImage {
 
     @Value("${azure.analyze.api.endpoint}")
     String analyzeApiEndpoint;
+    @Autowired
+    Environment environment;
 
     /**
      * Call Azure CV Analyze API to identify objects and metadata in image.
@@ -57,7 +63,6 @@ public class AnalyzeLocalImage {
             builder.setParameter("model-version", "latest");
 
             //Convert image to bytes.
-//            File localImage = new File(imgPath);
             byte[] imgBytes = Files.readAllBytes(imgPath);
             ByteArrayEntity requestEntity =
                     new ByteArrayEntity(imgBytes);
@@ -85,6 +90,7 @@ public class AnalyzeLocalImage {
                 imageAnalyzeResObj = om.readValue(responseStr, ImageAnalyzeRes.class);
                 imageAnalyzeResObj.setImgPath(imgPath.toString());
                 imageAnalyzeResObj.setProductName(Arrays.asList(imgPath.getFileName().toString().split("-")).get(0));
+                imageAnalyzeResObj.setImgUrl("http://"+ InetAddress.getLocalHost().getHostAddress()+":"+ environment.getProperty("server.port") + "/images/cropped/"+ imgPath.getFileName());
             }
 
             // Validating and sorting tag based on inventory and confidence.
@@ -94,7 +100,6 @@ public class AnalyzeLocalImage {
             tagList.sort(Comparator.comparing(a -> a.getConfidence()));
             imageAnalyzeResObj.setTags(tagList);
         } catch (Exception e) {
-            // Display error message.
             log.error(e.getMessage());
         }
         return imageAnalyzeResObj;

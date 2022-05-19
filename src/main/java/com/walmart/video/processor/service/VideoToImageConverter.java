@@ -16,23 +16,23 @@ import java.io.File;
 @Slf4j
 public class VideoToImageConverter {
 
-    private static String PATH_VIDEO = "src/main/resources/video/VID20220518121021.mp4";
-    //    private static String PATH_IMG = "src/main/resources/img/";
-    private static int IMG_COUNT = 5;
     @Value("${img.scanned.path}")
     String imgScannedPath;
 
+    @Value("${frame.count}")
+    int frameCount;
     /**
      * Get frames/images from video
      * @return
      * @throws Exception
      */
-    public String convertVideoToImage() throws Exception {
+    public String convertVideoToImage(String videoPath) throws Exception {
         log.info("Image generation started.");
+        log.info("Video file path: {}", videoPath);
         DirUtil.clearDir(imgScannedPath);
-        try (FFmpegFrameGrabber g = new FFmpegFrameGrabber(PATH_VIDEO)) {
+        try (FFmpegFrameGrabber g = new FFmpegFrameGrabber(videoPath)) {
             g.start();
-            for (int i = 0; i < IMG_COUNT; i++) {
+            for (int i = 0; i < frameCount; i++) {
                 Frame frame = g.grabImage();
                 BufferedImage image = new Java2DFrameConverter().convert(frame);
                 ImageIO.write(image, "png", new File(imgScannedPath + "img-" +System.currentTimeMillis() + ".png"));

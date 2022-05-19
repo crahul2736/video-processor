@@ -1,6 +1,5 @@
 package com.walmart.video.processor.service;
 
-import com.walmart.video.processor.utils.DirUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +13,7 @@ public class ImageCropperService {
 
     /**
      * Crop image
+     *
      * @param imgscannedPath
      * @param croppedImgPath
      * @param object
@@ -23,9 +23,8 @@ public class ImageCropperService {
      * @param h
      * @throws Exception
      */
-    public void cropImages(String imgscannedPath,String croppedImgPath, String object, int x, int y, int w, int h) throws Exception {
+    public void cropImages(String imgscannedPath, String croppedImgPath, String object, int x, int y, int w, int h) throws Exception {
         log.info("Images details : {} {}  {} {} {} {}", imgscannedPath, object, x, y, w, h);
-//        DirUtil.createDir(croppedImgPath);
 
         BufferedImage originalImg = ImageIO.read(
                 new File(imgscannedPath));
