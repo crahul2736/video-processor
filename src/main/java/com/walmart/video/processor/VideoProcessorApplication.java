@@ -20,7 +20,7 @@ public class VideoProcessorApplication {
 
 		@Override
 		public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-			registry.addResourceHandler("/images/**").addResourceLocations("file:///" + System.getProperty("user.dir") + "/src/main/images/");
+			registry.addResourceHandler("/media/images/**").addResourceLocations("file:///" + System.getProperty("user.dir") + "/src/main/media/images/");
 		}
 	}
 

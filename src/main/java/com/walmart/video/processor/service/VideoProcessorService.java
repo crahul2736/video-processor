@@ -115,14 +115,15 @@ public class VideoProcessorService {
         List<ProductDetails> productDetailsLst = new ArrayList<>();
         for (ImageAnalyzeRes imageAnalyzeRes : croppedImageAnalyzeResLst) {
             ProductDetails productDetails = ProductDetails.builder().productName(imageAnalyzeRes.getProductName())
-                    .brand(imageAnalyzeRes.getBrands().size() > 0 ? imageAnalyzeRes.getBrands().get(0).getName() : null)
+                    .brand(imageAnalyzeRes.getBrands().size() > 0 ? imageAnalyzeRes.getBrands().get(0).getName() : "")
                     .dominantColor(imageAnalyzeRes.getColor().getDominantColors().get(0))
                     .imgUrl(imageAnalyzeRes.getImgUrl())
-                    .tag(imageAnalyzeRes.getTags().get(0).getName())
-                    .confidence(imageAnalyzeRes.getTags().get(0).getConfidence())
+                    .tag(imageAnalyzeRes.getTags().size() > 0 ?imageAnalyzeRes.getTags().get(0).getName(): "")
+                    .confidence(imageAnalyzeRes.getTags().size() > 0 ? imageAnalyzeRes.getTags().get(0).getConfidence() :0.00)
                     .build();
 
             productDetailsLst.add(productDetails);
+            log.info("Product Details : {}", productDetailsLst.toString());
         }
         Response response = new Response();
         List<ProductDetails> uniqueProducts = productDetailsLst.stream()

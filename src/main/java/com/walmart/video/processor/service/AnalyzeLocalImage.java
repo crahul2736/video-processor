@@ -90,7 +90,7 @@ public class AnalyzeLocalImage {
                 imageAnalyzeResObj = om.readValue(responseStr, ImageAnalyzeRes.class);
                 imageAnalyzeResObj.setImgPath(imgPath.toString());
                 imageAnalyzeResObj.setProductName(Arrays.asList(imgPath.getFileName().toString().split("-")).get(0));
-                imageAnalyzeResObj.setImgUrl("http://"+ InetAddress.getLocalHost().getHostAddress()+":"+ environment.getProperty("server.port") + "/images/cropped/"+ imgPath.getFileName());
+                imageAnalyzeResObj.setImgUrl("http://"+ InetAddress.getLocalHost().getHostAddress()+":"+ environment.getProperty("server.port") + "/media/images/cropped/"+ imgPath.getFileName());
             }
 
             // Validating and sorting tag based on inventory and confidence.

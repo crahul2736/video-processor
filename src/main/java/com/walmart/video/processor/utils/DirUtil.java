@@ -16,8 +16,10 @@ public class DirUtil {
 
 
     public static void clearDir(String path) throws IOException {
-        log.info("video dir: {}",path);
+        log.info("video dir: {}", path);
         Path pathToBeDeleted = new File(path).toPath().toAbsolutePath();
+        log.info("pathToBeDeleted: {}", pathToBeDeleted.toString());
+        log.info("file exists: {} ", pathToBeDeleted.toFile().exists());
         if (!(pathToBeDeleted.toFile().listFiles().length == 0)) {
             Files.walk(pathToBeDeleted)
                     .filter(Files::isRegularFile)
