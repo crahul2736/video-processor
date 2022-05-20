@@ -1,0 +1,32 @@
+ [
+   {
+     "Product": "Chair",
+     "Image": "http://localhost:9091/media/images/cropped/img1.png",
+     "Color": "Red",
+     "Brand": "Ikea",
+     "Confidence": 0.7302590608596802,
+     "Tag": "mac"
+   },
+   {
+     "Product": "Laptop",
+     "Image": "http://localhost:9091/media/images/cropped/img2.png",
+     "Color": "Black",
+     "Brand": "mac",
+     "Confidence": 0.9454645,
+     "Tag": "mac"
+   },{
+   "Product": "computer mouse",
+   "Image": "http://localhost:9091/media/images/cropped/img3.png",
+   "Color": "Black",
+   "Brand": "mac",
+   "Confidence": 0.68787,
+   "Tag": "mac"
+ },{
+   "Product": "computer keyboard",
+   "Image": "http://localhost:9091/media/images/cropped/img4.png",
+   "Color": "Black",
+   "Brand": "",
+   "Confidence": 0.46657657,
+   "Tag": "mac"
+ }
+ ]

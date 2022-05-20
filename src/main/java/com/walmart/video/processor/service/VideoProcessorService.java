@@ -114,12 +114,12 @@ public class VideoProcessorService {
 
         List<ProductDetails> productDetailsLst = new ArrayList<>();
         for (ImageAnalyzeRes imageAnalyzeRes : croppedImageAnalyzeResLst) {
-            ProductDetails productDetails = ProductDetails.builder().productName(imageAnalyzeRes.getProductName())
-                    .brand(imageAnalyzeRes.getBrands().size() > 0 ? imageAnalyzeRes.getBrands().get(0).getName() : "")
-                    .dominantColor(imageAnalyzeRes.getColor().getDominantColors().get(0))
-                    .imgUrl(imageAnalyzeRes.getImgUrl())
-                    .tag(imageAnalyzeRes.getTags().size() > 0 ?imageAnalyzeRes.getTags().get(0).getName(): "")
-                    .confidence(imageAnalyzeRes.getTags().size() > 0 ? imageAnalyzeRes.getTags().get(0).getConfidence() :0.00)
+            ProductDetails productDetails = ProductDetails.builder().Product(imageAnalyzeRes.getProductName())
+                    .Brand(imageAnalyzeRes.getBrands().size() > 0 ? imageAnalyzeRes.getBrands().get(0).getName() : "")
+                    .Color(imageAnalyzeRes.getColor().getDominantColors().get(0))
+                    .Image(imageAnalyzeRes.getImgUrl())
+                    .Tag(imageAnalyzeRes.getTags().size() > 0 ?imageAnalyzeRes.getTags().get(0).getName(): "")
+                    .Confidence(imageAnalyzeRes.getTags().size() > 0 ? imageAnalyzeRes.getTags().get(0).getConfidence() :0.00)
                     .build();
 
             productDetailsLst.add(productDetails);
@@ -133,7 +133,7 @@ public class VideoProcessorService {
                 .stream()
                 .map(Optional::get)
                 .collect(Collectors.toList());
-        response.setProductDetails(uniqueProducts);
+        response.setProducts(uniqueProducts);
 
         return response;
     }

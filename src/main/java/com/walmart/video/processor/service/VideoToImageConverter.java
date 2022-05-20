@@ -26,7 +26,7 @@ public class VideoToImageConverter {
      * @return
      * @throws Exception
      */
-    public String convertVideoToImage(String videoPath) throws Exception {
+    /*public String convertVideoToImage(String videoPath) throws Exception {
         log.info("Image generation started.");
         log.info("Video file path: {}", videoPath);
         DirUtil.clearDir(imgScannedPath);
@@ -36,6 +36,28 @@ public class VideoToImageConverter {
                 Frame frame = g.grabImage();
                 BufferedImage image = new Java2DFrameConverter().convert(frame);
                 ImageIO.write(image, "png", new File(imgScannedPath + "img-" +System.currentTimeMillis() + ".png"));
+            }
+            g.stop();
+        }
+        log.info("Image generation completed.");
+        return imgScannedPath;
+    }*/
+    public String convertVideoToImage(String videoPath) throws Exception {
+        log.info("Image generation started.");
+        log.info("Video file path: {}", videoPath);
+        DirUtil.clearDir(imgScannedPath);
+        int counter = 1;
+        Frame frame =null;
+        try (FFmpegFrameGrabber g = new FFmpegFrameGrabber(videoPath)) {
+            g.start();
+
+            for (int i = 0; i < frameCount; i++) {
+                if(counter%30==0){
+                 frame = g.grabImage();
+                BufferedImage image = new Java2DFrameConverter().convert(frame);
+                ImageIO.write(image, "png", new File(imgScannedPath + "img-" +System.currentTimeMillis() + ".png"));
+                }
+                counter++;
             }
             g.stop();
         }
